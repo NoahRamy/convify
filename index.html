@@ -3,14 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Convify — Convert Anything</title>
-<meta name="description" content="Free online file converter. Convert audio, video, images, documents and data files instantly in your browser. No upload, no signup, 100% private.">
+<title>Convify — Free Online File Converter | MP3, PDF, JPG, Word, Excel & More</title>
+<meta name="description" content="Convert any file free online. MP4 to MP3, PDF to Word, JPG to PNG, CSV to Excel and 60+ more conversions. No upload, no signup, 100% private — all in your browser.">
+<meta name="keywords" content="file converter, free converter, MP4 to MP3, PDF to Word, JPG to PNG, CSV to JSON, online converter, audio converter, image converter, document converter, no upload converter">
+<meta name="author" content="Convify">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://convify-lac.vercel.app/">
+
+<!-- Open Graph (Facebook, WhatsApp previews) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://convify-lac.vercel.app/">
+<meta property="og:title" content="Convify — Free Online File Converter">
+<meta property="og:description" content="Convert MP4 to MP3, PDF to Word, images, data files and more. Free, private, no signup. All conversion happens in your browser.">
+<meta property="og:image" content="https://convify-lac.vercel.app/og-image.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Convify — Free Online File Converter">
+<meta name="twitter:description" content="Convert any file free. MP4→MP3, PDF→Word, JPG→PNG and 60+ more. No signup, 100% private.">
+
+<!-- Structured Data for Google -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Convify",
+  "url": "https://convify-lac.vercel.app",
+  "description": "Free online file converter. Convert audio, video, images, documents and data files instantly in your browser.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["MP4 to MP3", "PDF to Word", "JPG to PNG", "CSV to Excel", "Audio conversion", "Image conversion", "Document conversion"]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8699188730293688" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
 <style>
   :root {
     --bg: #0a0a0f;
@@ -375,6 +407,7 @@
     <a href="#converter">Convert</a>
     <a href="#formats">Formats</a>
     <a href="#features">Why Convify</a>
+    <a href="privacy.html">Privacy</a>
   </div>
 </nav>
 
@@ -401,6 +434,7 @@
 </div>
 
 <section class="converter-wrap" id="converter">
+<div id="converter-wrap-inner">
 
   <!-- CATEGORY TABS -->
   <div class="tabs" id="tabs">
@@ -410,6 +444,8 @@
     <button class="tab" data-cat="data">📊 Data</button>
     <button class="tab" data-cat="text">📝 Text</button>
     <button class="tab" data-cat="pdf">📄 PDF</button>
+    <button class="tab" data-cat="word">📃 Word</button>
+    <button class="tab" data-cat="color">🎨 Color</button>
   </div>
 
   <!-- DROP ZONE -->
@@ -469,6 +505,7 @@
   <!-- CONVERT BUTTON -->
   <button class="convert-btn" id="convert-btn" disabled>Select a file to convert</button>
 
+</div>
 </section>
 
 <!-- FEATURES -->
@@ -565,7 +602,7 @@
 
 <footer>
   <p>© 2026 Convify · All conversions happen in your browser · Your files are never uploaded</p>
-  <p style="margin-top:6px;"><a href="#">Privacy Policy</a> · <a href="#">Terms</a> · <a href="#">Contact</a></p>
+  <p style="margin-top:6px;"><a href="privacy.html">Privacy Policy</a> · <a href="privacy.html#terms">Terms</a> · <a href="mailto:hello@convify.app">Contact</a></p>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -594,7 +631,7 @@ const categories = {
       PNG:['JPG','WEBP','GIF','ICO','PDF','Base64'],
       JPG:['PNG','WEBP','GIF','ICO','PDF','Base64'],
       WEBP:['PNG','JPG','GIF'],
-      GIF:['PNG','JPG','WEBP','MP4'],
+      GIF:['PNG','JPG','WEBP'],
       BMP:['PNG','JPG','WEBP'],
       SVG:['PNG','JPG']
     }
@@ -623,13 +660,31 @@ const categories = {
     }
   },
   pdf: {
-    icon: '📄', hint: 'Supports PDF → images or text, images → PDF',
+    icon: '📄', hint: 'Supports PDF → images, text, Word, Excel or images → PDF',
     accept: '.pdf,.png,.jpg,.jpeg,.webp',
     formats: ['PDF','PNG','JPG'],
     targets: {
-      PDF:['Images (PNG)','Text (TXT)'],
+      PDF:['Images (PNG)','Text (TXT)','Word (HTML)','Excel (CSV)'],
       PNG:['PDF'],
       JPG:['PDF']
+    }
+  },
+  word: {
+    icon: '📃', hint: 'Supports DOCX — convert Word documents to other formats',
+    accept: '.docx,.doc',
+    formats: ['DOCX'],
+    targets: {
+      DOCX:['HTML','Plain Text','Markdown']
+    }
+  },
+  color: {
+    icon: '🎨', hint: 'Paste a color value in the box below and convert between formats',
+    accept: '.txt',
+    formats: ['HEX','RGB','HSL'],
+    targets: {
+      HEX:['RGB','HSL'],
+      RGB:['HEX','HSL'],
+      HSL:['HEX','RGB']
     }
   }
 };
@@ -711,6 +766,35 @@ function updateUI() {
   fileInput.accept = cat.accept;
   fromFormat.innerHTML = cat.formats.map(f => `<option value="${f}">${f}</option>`).join('');
   updateToFormats();
+
+  // Special UI for color converter
+  const colorUI = document.getElementById('color-converter-ui');
+  if (currentCat === 'color') {
+    dropzone.style.display = 'none';
+    fileInfo.classList.remove('show');
+    if (!colorUI) {
+      const div = document.createElement('div');
+      div.id = 'color-converter-ui';
+      div.style.cssText = 'background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;';
+      div.innerHTML = `
+        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Enter your color value</label>
+        <input id="color-input" type="text" placeholder="e.g. #6c63ff or rgb(108,99,255) or hsl(244,100%,70%)"
+          style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);font-size:14px;font-family:DM Mono,monospace;margin-bottom:12px;">
+        <div id="color-preview" style="width:100%;height:48px;border-radius:var(--radius-sm);border:1px solid var(--border2);transition:background 0.3s;"></div>
+      `;
+      document.getElementById('converter-wrap-inner').insertBefore(div, document.querySelector('.format-row'));
+      document.getElementById('color-input').addEventListener('input', e => {
+        document.getElementById('color-preview').style.background = e.target.value;
+      });
+    } else { colorUI.style.display = ''; }
+    convertBtn.disabled = false;
+    convertBtn.textContent = 'Convert color';
+  } else {
+    if (colorUI) colorUI.style.display = 'none';
+    dropzone.style.display = '';
+    convertBtn.disabled = true;
+    convertBtn.textContent = 'Select a file to convert';
+  }
 }
 
 function updateToFormats() {
@@ -936,8 +1020,124 @@ async function runConversion() {
     return;
   }
 
+  // WORD (DOCX) conversions using mammoth.js
+  if (currentCat === 'word') {
+    setProgress(30, 'Reading Word document...');
+    const arrayBuf = await file.arrayBuffer();
+    let output = ''; let outExt = 'html'; let outMime = 'text/html';
+    if (to === 'HTML') {
+      const result = await mammoth.convertToHtml({arrayBuffer: arrayBuf});
+      output = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;line-height:1.7;padding:1rem}h1,h2,h3{margin:1rem 0 0.5rem}p{margin:0.5rem 0}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:8px}</style></head><body>${result.value}</body></html>`;
+      outExt = 'html'; outMime = 'text/html';
+    } else if (to === 'Plain Text') {
+      const result = await mammoth.extractRawText({arrayBuffer: arrayBuf});
+      output = result.value; outExt = 'txt'; outMime = 'text/plain';
+    } else if (to === 'Markdown') {
+      const result = await mammoth.extractRawText({arrayBuffer: arrayBuf});
+      output = result.value.replace(/\n\n/g, '\n\n'); outExt = 'md'; outMime = 'text/markdown';
+    }
+    setProgress(90, 'Finalizing...');
+    resultBlob = new Blob([output], {type: outMime});
+    resultFilename = baseName + '.' + outExt;
+    setProgress(100, 'Done!');
+    showResult(resultFilename, `${formatSize(resultBlob.size)} · ready to download`);
+    return;
+  }
+
+  // COLOR converter
+  if (currentCat === 'color') {
+    const input = (document.getElementById('color-input')?.value || '').trim();
+    if (!input) { showError('Please enter a color value first.'); return; }
+    let r,g,b;
+    if (input.startsWith('#')) {
+      const hex = input.slice(1);
+      r = parseInt(hex.slice(0,2),16); g = parseInt(hex.slice(2,4),16); b = parseInt(hex.slice(4,6),16);
+    } else if (input.startsWith('rgb')) {
+      [r,g,b] = input.match(/\d+/g).map(Number);
+    } else if (input.startsWith('hsl')) {
+      const [h,s,l] = input.match(/[\d.]+/g).map(Number);
+      const hslToRgb = (h,s,l) => {
+        s/=100; l/=100;
+        const k = n => (n+h/30)%12;
+        const a = s*Math.min(l,1-l);
+        const f = n => l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));
+        return [Math.round(f(0)*255),Math.round(f(8)*255),Math.round(f(4)*255)];
+      };
+      [r,g,b] = hslToRgb(h,s,l);
+    } else { showError('Unrecognized color format. Use #hex, rgb(), or hsl()'); return; }
+    const toHex = v => v.toString(16).padStart(2,'0');
+    const hex = `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    const rgb = `rgb(${r}, ${g}, ${b})`;
+    const h2 = () => {
+      const rr=r/255,gg=g/255,bb=b/255;
+      const max=Math.max(rr,gg,bb),min=Math.min(rr,gg,bb);
+      let h,s,l=(max+min)/2;
+      if(max===min){h=s=0;}else{const d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);switch(max){case rr:h=((gg-bb)/d+(gg<bb?6:0))/6;break;case gg:h=((bb-rr)/d+2)/6;break;default:h=((rr-gg)/d+4)/6;}}
+      return `hsl(${Math.round(h*360)}, ${Math.round(s*100)}%, ${Math.round(l*100)}%)`;
+    };
+    const hsl = h2();
+    const outputs = { HEX: hex, RGB: rgb, HSL: hsl };
+    const resultText = Object.entries(outputs).map(([k,v]) => `${k}: ${v}`).join('\n');
+    resultBlob = new Blob([resultText], {type:'text/plain'});
+    resultFilename = 'color-conversion.txt';
+    setProgress(100,'Done!');
+    showResult(resultFilename, `${hex} · ${rgb} · ${hsl}`);
+    return;
+  }
   // PDF conversions
   if (currentCat === 'pdf') {
+    if (from === 'PDF' && to === 'Word (HTML)') {
+      setProgress(20,'Extracting from PDF...');
+      const arrayBuf = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({data:arrayBuf}).promise;
+      let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Georgia,serif;max-width:800px;margin:2rem auto;line-height:1.8;padding:1rem;font-size:15px}p{margin:0.6rem 0}</style></head><body>`;
+      for (let i=1;i<=pdf.numPages;i++) {
+        setProgress(20+(i/pdf.numPages)*65,`Processing page ${i} of ${pdf.numPages}...`);
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        let pageText = '';
+        let lastY = null;
+        for (const item of content.items) {
+          if (lastY !== null && Math.abs(item.transform[5] - lastY) > 5) pageText += '</p><p>';
+          pageText += item.str + ' ';
+          lastY = item.transform[5];
+        }
+        html += `<h2 style="color:#555;font-size:13px;border-bottom:1px solid #eee;padding-bottom:4px">Page ${i}</h2><p>${pageText}</p>`;
+      }
+      html += '</body></html>';
+      resultBlob = new Blob([html],{type:'text/html'});
+      resultFilename = baseName + '_word.html';
+      setProgress(100,'Done!');
+      showResult(resultFilename, `Open in Word or any browser · ${formatSize(resultBlob.size)}`);
+      showToast('Tip: Open the HTML file in Word, then Save As .docx!');
+      return;
+    }
+    if (from === 'PDF' && to === 'Excel (CSV)') {
+      setProgress(20,'Extracting from PDF...');
+      const arrayBuf = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({data:arrayBuf}).promise;
+      let rows = [];
+      for (let i=1;i<=pdf.numPages;i++) {
+        setProgress(20+(i/pdf.numPages)*65,`Reading page ${i}...`);
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        let lineMap = {};
+        for (const item of content.items) {
+          const y = Math.round(item.transform[5]);
+          if (!lineMap[y]) lineMap[y] = [];
+          lineMap[y].push(item.str);
+        }
+        Object.keys(lineMap).sort((a,b)=>b-a).forEach(y => {
+          rows.push(lineMap[y].map(v => `"${v.replace(/"/g,'""')}"`).join(','));
+        });
+      }
+      const csv = rows.join('\n');
+      resultBlob = new Blob([csv],{type:'text/csv'});
+      resultFilename = baseName + '.csv';
+      setProgress(100,'Done!');
+      showResult(resultFilename, `Extracted · open in Excel`);
+      return;
+    }
     if (from === 'PDF' && to === 'Images (PNG)') {
       setProgress(20, 'Loading PDF...');
       const arrayBuf = await file.arrayBuffer();
